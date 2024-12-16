@@ -1,4 +1,5 @@
 import React from "react";
+import "./Button.scss";
 
 // TODO: add addition types later!!
 interface ButtonProps {
@@ -6,7 +7,7 @@ interface ButtonProps {
 }
 
 const Button: React.FC<ButtonProps> = ({ children }) => {
-  return <button>{children}</button>;
+  return <button className="button">{children}</button>;
 };
 
 export default Button;

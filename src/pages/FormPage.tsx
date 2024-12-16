@@ -5,6 +5,9 @@ import Button from "../components/ui/Button";
 import Container from "../components/ui/Container";
 import Card from "../components/ui/Card";
 
+// import components
+import AssetForm from "../components/AssetForm";
+
 // UI components
 // box Component -> border, dropShadow etc
 // button Component ->
@@ -13,12 +16,12 @@ import Card from "../components/ui/Card";
 const FormPage: React.FC = () => {
   return (
     <>
-      <h1>Step One</h1>
       <div className="container">
-        <Button>Save & Continue</Button>
         <Container>
-          <Card>
-            <div className="stepOne card">Step One</div>
+          <Card className="stepOne">
+            <h1>Step One</h1>
+            <h2>1 Asset</h2>
+            <AssetForm></AssetForm>
           </Card>
           <Card>
             {" "}
@@ -27,6 +30,7 @@ const FormPage: React.FC = () => {
           <Card>
             <div className="internalNode card">Internal Node</div>
           </Card>
+          <Button>Save & Continue</Button>
         </Container>
       </div>
     </>
