@@ -1,0 +1,31 @@
+.date-time-form {
+  .form-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .form-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+    input {
+      font-weight: bold;
+      color: var(--textColor);
+    }
+
+    label {
+      font-size: 0.75rem;
+      color: var(--textColor);
+    }
+  }
+  input[type="text"],
+  input[type="number"],
+  select {
+    border: none;
+    border-bottom: 2px solid var(--borderColor);
+    padding: 0.5rem 0;
+    flex-grow: 1;
+    font-size: 0.75rem;
+  }
+}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 
 // import ui components
 import Button from "../components/ui/Button";
@@ -7,30 +7,53 @@ import Card from "../components/ui/Card";
 
 // import components
 import AssetForm from "../components/AssetForm";
-
-// UI components
-// box Component -> border, dropShadow etc
-// button Component ->
-// add Asset Component -> Yellow Button with plus Icon
+import DateTimeForm from "../components/DateTimeForm";
+import InternalNote from "../components/InternalNote";
+import Modal from "../components/ui/Modal";
+import { FormContext } from "../context/form.context";
 
 const FormPage: React.FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const formContext = useContext(FormContext);
+
+  if (!formContext) {
+    throw new Error("formContext is false or undefined");
+  }
+  const { formContextData } = formContext;
+
   return (
     <>
       <div className="container">
         <Container>
-          <Card className="stepOne">
+          <Card className="step-one">
             <h1>Step One</h1>
-            <h2>1 Asset</h2>
-            <AssetForm></AssetForm>
+            <AssetForm />
           </Card>
           <Card>
-            {" "}
-            <div className="stepTwo card">Step Two</div>
+            <div className="step-two">
+              <h1>Step two</h1>
+              <DateTimeForm />
+            </div>
           </Card>
           <Card>
-            <div className="internalNode card">Internal Node</div>
+            <div className="internal-note">
+              <h1>Internal Note</h1>
+              <InternalNote />
+            </div>
           </Card>
-          <Button>Save & Continue</Button>
+          <Modal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            title="Modal to show contents"
+            modalData={formContextData}
+          ></Modal>
+          <Button
+            className="button-yellow"
+            onClick={() => setIsModalOpen(true)}
+          >
+            Show Content
+          </Button>
         </Container>
       </div>
     </>

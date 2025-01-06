@@ -1,0 +1,44 @@
+.asset-form {
+  .form-row-top {
+    gap: 2rem;
+    display: flex;
+    margin-bottom: 2rem;
+  }
+
+  .form-row {
+    gap: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin-bottom: 2rem;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  select {
+    border: none;
+    border-bottom: 2px solid var(--borderColor);
+    padding: 0.5rem 0;
+    flex-grow: 1;
+    font-size: 0.75rem;
+  }
+
+  label {
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.225rem;
+  }
+
+  .checkboxLabel {
+    margin-right: 1rem;
+    font-size: 0.75rem;
+  }
+
+  .small-input {
+    width: 70px;
+  }
+
+  #dropdown {
+    color: var(--textColor);
+  }
+}

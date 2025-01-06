@@ -7,3 +7,19 @@
   font-size: 0.75rem;
   font-weight: bold;
 }
+
+.button-yellow {
+  background-color: #fec900;
+  border: none;
+}
+
+.buttonContent {
+  display: flex;
+  gap: 1rem;
+  align-content: center;
+  align-items: center;
+
+  .check-icon {
+    font-size: 2rem;
+  }
+}
