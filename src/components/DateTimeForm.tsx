@@ -19,18 +19,20 @@ interface DateTimeFormData {
 
 const DateTimeForm: React.FC = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [formData, setFormData] = useState<DateTimeFormData>({
-    date: "",
-    time: "",
-    seller: "",
-    owner: "",
-    salesPrice: "",
-    commission: "",
-    revenuesActual: "",
-    revenuesTarget: "",
-    usableSpace: "",
-    grossFloorArea: "",
-  });
+  // const [formData, setFormData] = useState<DateTimeFormData>({
+  //   date: "",
+  //   time: "",
+  //   seller: "",
+  //   owner: "",
+  //   salesPrice: "",
+  //   commission: "",
+  //   revenuesActual: "",
+  //   revenuesTarget: "",
+  //   usableSpace: "",
+  //   grossFloorArea: "",
+  // });
+
+  const [formData, setFormData] = useState<Partial<DateTimeFormData>>({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

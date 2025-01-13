@@ -22,28 +22,81 @@ interface AssetFormData {
   walt: string;
 }
 
+interface AssetConfig {
+  type: string;
+  name: string;
+  placeholder: string;
+}
+
 const AssetForm: React.FC = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [formData, setFormData] = useState<AssetFormData>({
-    street: "",
-    number: "",
-    postcode: "",
-    city: "",
-    country: "",
-    plotArea: "",
-    usableArea: "",
-    yearOfConstruction: "",
-    yearOfRedevelopment: "",
-    assetClass: "",
-    objectStatus: "",
-    energyClass: "",
-    monumentProtection: false,
-    mainTenant: "",
-    yearlyRevenue: "",
-    walt: "",
-  });
+  const [formData, setFormData] = useState<Partial<AssetFormData>>({});
 
   const formContext = useContext(FormContext);
+
+  const adressFields: AssetConfig[] = [
+    {
+      type: "text",
+      name: "street",
+      placeholder: "Street",
+    },
+    {
+      type: "text",
+      name: "number",
+      placeholder: "Number",
+    },
+    {
+      type: "number",
+      name: "postcode",
+      placeholder: "Postcode",
+    },
+    {
+      type: "text",
+      name: "city",
+      placeholder: "City",
+    },
+    {
+      type: "text",
+      name: "country",
+      placeholder: "Country",
+    },
+  ];
+
+  const areaFields: AssetConfig[] = [
+    {
+      type: "number",
+      name: "plotArea",
+      placeholder: "Plot area (m²)",
+    },
+    {
+      type: "number",
+      name: "usableArea",
+      placeholder: "Usable area (m²)",
+    },
+    {
+      type: "number",
+      name: "yearlyRevenue",
+      placeholder: "Yearly Revenue (€)",
+    },
+  ];
+
+  const yearInformationFields: AssetConfig[] = [
+    {
+      type: "number",
+      name: "yearOfConstruction",
+      placeholder: "Year Of Construction",
+    },
+    {
+      type: "text",
+      name: "yearOfRedevelopment",
+      placeholder: "Year Of Construction",
+    },
+    {
+      type: "checkbox",
+      name: "monumentProtection",
+      placeholder: "Year Of Construction",
+    },
+  ];
 
   if (!formContext) {
     throw new Error("formContext is false or undefined");
@@ -51,25 +104,51 @@ const AssetForm: React.FC = () => {
   const { setFormContextData } = formContext;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("✨✨ Event in handle Change: ", e.target);
+
+    // Checks for the type of field
+    switch (e.target.type) {
+      case "text":
+        console.log("text");
+        setFormData({
+          ...formData,
+          [e.target.name]: e.target.value,
+        });
+        break;
+      case "checkbox":
+        console.log("checkbox");
+        setFormData({
+          ...formData,
+          [e.target.name]: e.target.checked,
+        });
+        break;
+      case "select":
+        console.log("select");
+        setFormData({
+          ...formData,
+          [e.target.name]: e.target.value,
+        });
+    }
+
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.checked,
-    });
-  };
+  // const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setFormData({
+  //     ...formData,
+  //     [e.target.name]: e.target.checked,
+  //   });
+  // };
 
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  // const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  //   setFormData({
+  //     ...formData,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -95,73 +174,40 @@ const AssetForm: React.FC = () => {
   return (
     <form className="asset-form" onSubmit={handleFormSubmit}>
       <div className="form-group">
-        {/* <h3>Address Information</h3> */}
         <div className="form-row-top">
-          <input
-            type="text"
-            name="street"
-            value={formData.street}
-            onChange={handleChange}
-            placeholder="Street"
-          />
-          <input
-            type="number"
-            name="number"
-            value={formData.number}
-            onChange={handleChange}
-            placeholder="Number"
-            className="small-input"
-          />
-          <input
-            type="number"
-            name="postcode"
-            value={formData.postcode}
-            onChange={handleChange}
-            placeholder="Postcode"
-          />
-          <input
-            type="text"
-            name="city"
-            value={formData.city}
-            onChange={handleChange}
-            placeholder="City"
-          />
-          <input
-            type="text"
-            name="country"
-            value={formData.country}
-            onChange={handleChange}
-            placeholder="Country"
-          />
+          {adressFields.map((input) => (
+            <input
+              key={input.name}
+              type={input.type}
+              name={input.name}
+              onChange={handleChange}
+              placeholder={input.placeholder}
+            />
+          ))}
         </div>
       </div>
-      {/* Asset Details Group */}
       <div className="form-group">
-        {/* <h3>Asset Details</h3> */}
         <div className="form-row">
-          <input
-            type="number"
-            name="plotArea"
-            value={formData.plotArea}
-            onChange={handleChange}
-            placeholder="Plot area (m²)"
-          />
-          <input
-            type="number"
-            name="usableArea"
-            value={formData.usableArea}
-            onChange={handleChange}
-            placeholder="Usable area (m²)"
-          />
-          <input
-            type="number"
-            name="yearlyRevenue"
-            value={formData.yearlyRevenue}
-            onChange={handleChange}
-            placeholder="Yearly Revenue (€)"
-          />
+          {areaFields.map((input) => (
+            <input
+              key={input.name}
+              type={input.type}
+              name={input.name}
+              onChange={handleChange}
+              placeholder={input.placeholder}
+            />
+          ))}
         </div>
         <div className="form-row">
+          {yearInformationFields.map((input) => (
+            <input
+              key={input.name}
+              type={input.type}
+              name={input.name}
+              onChange={handleChange}
+              placeholder={input.placeholder}
+            ></input>
+          ))}
           <input
             type="number"
             name="yearOfConstruction"
@@ -181,12 +227,12 @@ const AssetForm: React.FC = () => {
               type="checkbox"
               name="monumentProtection"
               checked={formData.monumentProtection}
-              onChange={handleCheckboxChange}
+              onChange={handleChange}
             />
             <span className="checkboxLabel">Monument Protection</span>
           </label>
         </div>
-        <div className="form-row">
+        {/* <div className="form-row">
           <select
             id="dropdown"
             value={formData.assetClass}
@@ -229,7 +275,7 @@ const AssetForm: React.FC = () => {
             <option value="E">E</option>
             <option value="F">F</option>
           </select>
-        </div>
+        </div> */}
       </div>
       <div className="form-group">
         <div className="form-row">
