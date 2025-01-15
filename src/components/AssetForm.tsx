@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Button from "./ui/Button";
 import { FormContext } from "../context/form.context";
 import "./AssetForm.scss";
@@ -30,9 +30,30 @@ interface AssetConfig {
 
 const AssetForm: React.FC = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [formData, setFormData] = useState<Partial<AssetFormData>>({});
+  const [formData, setFormData] = useState<Partial<AssetFormData>>({
+    street: "",
+    number: "",
+    postcode: "",
+    city: "",
+    country: "",
+    plotArea: "",
+    usableArea: "",
+    yearOfConstruction: "",
+    yearOfRedevelopment: "",
+    assetClass: "",
+    objectStatus: "",
+    energyClass: "",
+    monumentProtection: false,
+    mainTenant: "",
+    yearlyRevenue: "",
+    walt: "",
+  });
 
   const formContext = useContext(FormContext);
+
+  useEffect(() => {
+    console.log("formData in effect", formData);
+  }, [formData]);
 
   const adressFields: AssetConfig[] = [
     {
@@ -89,7 +110,7 @@ const AssetForm: React.FC = () => {
     {
       type: "text",
       name: "yearOfRedevelopment",
-      placeholder: "Year Of Construction",
+      placeholder: "Year Of Redeveloping",
     },
     {
       type: "checkbox",
@@ -104,26 +125,26 @@ const AssetForm: React.FC = () => {
   const { setFormContextData } = formContext;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("✨✨ Event in handle Change: ", e.target);
+    console.log("✨✨ Event in handle Change: ", e.target, formData);
 
     // Checks for the type of field
     switch (e.target.type) {
       case "text":
-        console.log("text");
+        console.log("text", formData);
         setFormData({
           ...formData,
           [e.target.name]: e.target.value,
         });
         break;
       case "checkbox":
-        console.log("checkbox");
+        console.log("checkbox", e.target.checked, e.target.name, formData);
         setFormData({
           ...formData,
           [e.target.name]: e.target.checked,
         });
         break;
       case "select":
-        console.log("select");
+        console.log("select", formData);
         setFormData({
           ...formData,
           [e.target.name]: e.target.value,
@@ -153,6 +174,8 @@ const AssetForm: React.FC = () => {
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFormContextData((prevState: any) => {
+      console.log("prevState: ", prevState);
+      console.log("formData: ", formData);
       if (prevState) {
         return {
           ...prevState,
@@ -197,46 +220,49 @@ const AssetForm: React.FC = () => {
               placeholder={input.placeholder}
             />
           ))}
-        </div>
-        <div className="form-row">
-          {yearInformationFields.map((input) => (
+          {areaFields.map((input) => (
             <input
               key={input.name}
               type={input.type}
               name={input.name}
               onChange={handleChange}
               placeholder={input.placeholder}
-            ></input>
-          ))}
-          <input
-            type="number"
-            name="yearOfConstruction"
-            value={formData.yearOfConstruction}
-            onChange={handleChange}
-            placeholder="Year Of Construction"
-          />
-          <input
-            type="text"
-            name="yearOfRedevelopment"
-            value={formData.yearOfRedevelopment}
-            onChange={handleChange}
-            placeholder="Year of Redevelopment"
-          />
-          <label>
-            <input
-              type="checkbox"
-              name="monumentProtection"
-              checked={formData.monumentProtection}
-              onChange={handleChange}
+              {...(input.type === "checkbox" && { value: "true" })}
             />
-            <span className="checkboxLabel">Monument Protection</span>
-          </label>
+          ))}
         </div>
-        {/* <div className="form-row">
+        <div className="form-row">
+          {yearInformationFields.map((input) => {
+            if (input.type === "text") {
+              return (
+                <input
+                  key={input.name}
+                  type={input.type}
+                  name={input.name}
+                  onChange={handleChange}
+                  placeholder={input.placeholder}
+                />
+              );
+            }
+            if (input.type === "checkbox") {
+              return (
+                <input
+                  key={input.name}
+                  type="checkbox"
+                  onChange={handleChange}
+                  name={input.name}
+                  placeholder={input.placeholder}
+                  value="true"
+                />
+              );
+            }
+          })}
+        </div>
+        <div className="form-row">
           <select
             id="dropdown"
             value={formData.assetClass}
-            onChange={handleSelectChange}
+            onChange={handleChange}
             name="assetClass"
           >
             <option value="" disabled selected>
@@ -249,7 +275,7 @@ const AssetForm: React.FC = () => {
           <select
             id="dropdown"
             value={formData.objectStatus}
-            onChange={handleSelectChange}
+            onChange={handleChange}
             name="objectStatus"
           >
             <option value="" disabled selected>
@@ -262,7 +288,7 @@ const AssetForm: React.FC = () => {
           <select
             id="dropdown"
             value={formData.energyClass}
-            onChange={handleSelectChange}
+            onChange={handleChange}
             name="energyClass"
           >
             <option value="" disabled selected>
@@ -275,7 +301,7 @@ const AssetForm: React.FC = () => {
             <option value="E">E</option>
             <option value="F">F</option>
           </select>
-        </div> */}
+        </div>
       </div>
       <div className="form-group">
         <div className="form-row">
