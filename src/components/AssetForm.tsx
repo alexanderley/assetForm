@@ -51,10 +51,6 @@ const AssetForm: React.FC = () => {
 
   const formContext = useContext(FormContext);
 
-  useEffect(() => {
-    console.log("formData in effect", formData);
-  }, [formData]);
-
   const adressFields: AssetConfig[] = [
     {
       type: "text",
@@ -124,7 +120,9 @@ const AssetForm: React.FC = () => {
   }
   const { setFormContextData } = formContext;
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     console.log("✨✨ Event in handle Change: ", e.target, formData);
 
     // Checks for the type of field
@@ -157,20 +155,6 @@ const AssetForm: React.FC = () => {
     });
   };
 
-  // const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setFormData({
-  //     ...formData,
-  //     [e.target.name]: e.target.checked,
-  //   });
-  // };
-
-  // const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-  //   setFormData({
-  //     ...formData,
-  //     [e.target.name]: e.target.value,
-  //   });
-  // };
-
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFormContextData((prevState: any) => {
@@ -194,42 +178,63 @@ const AssetForm: React.FC = () => {
     }, 3000);
   };
 
+  interface InputElement {
+    id?: string;
+    label?: string; // Label for the input element
+    name: string; // Name attribute for the input element
+    type: string; // Type of input, e.g., 'text', 'number', 'checkbox', etc.
+    value?: string | number | boolean; // Optional default value for the input
+    placeholder?: string; // Optional placeholder text
+    required?: boolean; // Optional flag for required inputs
+    options?: { label: string; value: string | number }[];
+  }
+
+  type InputElements = InputElement[];
+
+  // function to rende inputfields
+  const renderInputs = (inputElements: InputElements): JSX.Element[] => {
+    return inputElements.map(
+      (input) =>
+        input.id === "dropdown" ? (
+          <select
+            id="dropdown"
+            value={String(input.value || "")} // Cast to string or provide a default empty string
+            name={String(input.value) || ""}
+            onChange={handleChange}
+          ></select>
+        ) : (
+          <input
+            key={input.name}
+            type={input.type}
+            name={input.name}
+            onChange={handleChange}
+            placeholder={input.placeholder}
+            {...(input.type === "checkbox" && { value: "true" })}
+          />
+        )
+      // <input
+      //   key={input.name}
+      //   type={input.type}
+      //   name={input.name}
+      //   onChange={handleChange}
+      //   placeholder={input.placeholder}
+      //   {...(input.type === "checkbox" && { value: "true" })}
+      // />
+    );
+  };
+
   return (
     <form className="asset-form" onSubmit={handleFormSubmit}>
       <div className="form-group">
         <div className="form-row-top">
-          {adressFields.map((input) => (
-            <input
-              key={input.name}
-              type={input.type}
-              name={input.name}
-              onChange={handleChange}
-              placeholder={input.placeholder}
-            />
-          ))}
+          {/* function to render inputs */}
+          {renderInputs(adressFields)}
         </div>
       </div>
       <div className="form-group">
         <div className="form-row">
-          {areaFields.map((input) => (
-            <input
-              key={input.name}
-              type={input.type}
-              name={input.name}
-              onChange={handleChange}
-              placeholder={input.placeholder}
-            />
-          ))}
-          {areaFields.map((input) => (
-            <input
-              key={input.name}
-              type={input.type}
-              name={input.name}
-              onChange={handleChange}
-              placeholder={input.placeholder}
-              {...(input.type === "checkbox" && { value: "true" })}
-            />
-          ))}
+          {/* function to render inputs */}
+          {renderInputs(areaFields)}
         </div>
         <div className="form-row">
           {yearInformationFields.map((input) => {
@@ -258,6 +263,7 @@ const AssetForm: React.FC = () => {
             }
           })}
         </div>
+        {/* Todo: create function for select */}
         <div className="form-row">
           <select
             id="dropdown"
