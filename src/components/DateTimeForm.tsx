@@ -29,7 +29,10 @@ const DateTimeForm: React.FC = () => {
   //   revenuesActual: "",
   //   revenuesTarget: "",
   //   usableSpace: "",
-  //   grossFloorArea: "",
+  //   grossFloorArea
+  // 
+  // 
+  // : "",
   // });
 
   const [formData, setFormData] = useState<Partial<DateTimeFormData>>({});

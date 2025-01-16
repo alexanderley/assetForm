@@ -22,10 +22,19 @@ interface AssetFormData {
   walt: string;
 }
 
+interface Option {
+  label: string;
+  value: string | number;
+}
+
 interface AssetConfig {
   type: string;
   name: string;
   placeholder: string;
+
+  // for select fields
+  id?: string;
+  options?: Option[];
 }
 
 const AssetForm: React.FC = () => {
@@ -115,6 +124,42 @@ const AssetForm: React.FC = () => {
     },
   ];
 
+  const assetClassFields: AssetConfig[] = [
+    {
+      id: "dropdown",
+      type: "select",
+      name: "objectStatus",
+      placeholder: "Select Asset Class",
+      options: [
+        { value: "objectStatus-1", label: "Objektstatus 1" },
+        { value: "objectStatus-2", label: "Objektstatus 2" },
+        { value: "objectStatus-3", label: "Objektstatus 3" },
+      ],
+    },
+    {
+      id: "dropdown",
+      type: "select",
+      name: "assetClass",
+      placeholder: "Select Asset Class",
+      options: [
+        { value: "assetClass-1", label: "assetClass 1" },
+        { value: "assetClass-2", label: "assetClass 2" },
+        { value: "assetClass-3", label: "assetClass 3" },
+      ],
+    },
+    {
+      id: "dropdown",
+      type: "select",
+      name: "assetClass",
+      placeholder: "Energy Class",
+      options: [
+        { value: "A", label: "A" },
+        { value: "B", label: "B" },
+        { value: "C", label: "C" },
+      ],
+    },
+  ];
+
   if (!formContext) {
     throw new Error("formContext is false or undefined");
   }
@@ -124,7 +169,6 @@ const AssetForm: React.FC = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     console.log("✨✨ Event in handle Change: ", e.target, formData);
-
     // Checks for the type of field
     switch (e.target.type) {
       case "text":
@@ -180,48 +224,95 @@ const AssetForm: React.FC = () => {
 
   interface InputElement {
     id?: string;
-    label?: string; // Label for the input element
-    name: string; // Name attribute for the input element
-    type: string; // Type of input, e.g., 'text', 'number', 'checkbox', etc.
-    value?: string | number | boolean; // Optional default value for the input
-    placeholder?: string; // Optional placeholder text
-    required?: boolean; // Optional flag for required inputs
-    options?: { label: string; value: string | number }[];
+    label?: string;
+    name: string;
+    type: string;
+    value?: string | number | boolean;
+    placeholder?: string;
+    required?: boolean;
+
+    // typescript error:
+    options?: { label?: string; value: string | number }[];
   }
 
   type InputElements = InputElement[];
 
   // function to rende inputfields
   const renderInputs = (inputElements: InputElements): JSX.Element[] => {
-    return inputElements.map(
-      (input) =>
-        input.id === "dropdown" ? (
-          <select
-            id="dropdown"
-            value={String(input.value || "")} // Cast to string or provide a default empty string
-            name={String(input.value) || ""}
-            onChange={handleChange}
-          ></select>
-        ) : (
-          <input
-            key={input.name}
-            type={input.type}
-            name={input.name}
-            onChange={handleChange}
-            placeholder={input.placeholder}
-            {...(input.type === "checkbox" && { value: "true" })}
-          />
-        )
-      // <input
-      //   key={input.name}
-      //   type={input.type}
-      //   name={input.name}
-      //   onChange={handleChange}
-      //   placeholder={input.placeholder}
-      //   {...(input.type === "checkbox" && { value: "true" })}
-      // />
+    return inputElements.map((input) =>
+      input.id === "dropdown" ? (
+        <select
+          id="dropdown"
+          value={String(input.value || "")} // Cast to string or provide a default empty string
+          name={String(input.value) || ""}
+          onChange={handleChange}
+        >
+          {/* Default dropdown field */}
+          <option value="" disabled selected>
+            {input.placeholder}
+          </option>
+          {input.options?.map((option) => (
+            <option value={option.value}>{option.value}</option>
+          ))}
+        </select>
+      ) : (
+        <input
+          key={input.name}
+          type={input.type}
+          name={input.name}
+          onChange={handleChange}
+          placeholder={input.placeholder}
+          {...(input.type === "checkbox" && { value: "true" })}
+        />
+      )
     );
   };
+
+  // const renderInputs = (inputElements: InputElements): JSX.Element[] => {
+  //   return inputElements.map((input) => {
+  //     if (input.id === "dropdown" && input.options) {
+  //       return (
+  //         <select
+  //           key={input.name}
+  //           id="dropdown"
+  //           value={String(input.value || "")}
+  //           name={input.name}
+  //           onChange={handleChange}
+  //         >
+  //           {input.options.map((option) => (
+  //             <option key={option.value} value={option.value}>
+  //               {option.label}
+  //             </option>
+  //           ))}
+  //         </select>
+  //       );
+  //     }
+
+  //     if (input.type === "checkbox") {
+  //       return (
+  //         <input
+  //           key={input.name}
+  //           type="checkbox"
+  //           name={input.name}
+  //           onChange={handleChange}
+  //           checked={input.value === "true"}
+  //         />
+  //       );
+  //     }
+
+  //     // Default input case
+  //     return (
+  //       <input
+  //         key={input.name}
+  //         type={input.type}
+  //         name={input.name}
+  //         onChange={handleChange}
+  //         value={String(input.value || "")}
+  //         placeholder={input.placeholder}
+  //       />
+  //     );
+  //   });
+  // };
 
   return (
     <form className="asset-form" onSubmit={handleFormSubmit}>
@@ -236,36 +327,11 @@ const AssetForm: React.FC = () => {
           {/* function to render inputs */}
           {renderInputs(areaFields)}
         </div>
-        <div className="form-row">
-          {yearInformationFields.map((input) => {
-            if (input.type === "text") {
-              return (
-                <input
-                  key={input.name}
-                  type={input.type}
-                  name={input.name}
-                  onChange={handleChange}
-                  placeholder={input.placeholder}
-                />
-              );
-            }
-            if (input.type === "checkbox") {
-              return (
-                <input
-                  key={input.name}
-                  type="checkbox"
-                  onChange={handleChange}
-                  name={input.name}
-                  placeholder={input.placeholder}
-                  value="true"
-                />
-              );
-            }
-          })}
-        </div>
+        <div className="form-row">{renderInputs(yearInformationFields)}</div>
         {/* Todo: create function for select */}
         <div className="form-row">
-          <select
+          {renderInputs(assetClassFields)}
+          {/* <select
             id="dropdown"
             value={formData.assetClass}
             onChange={handleChange}
@@ -277,7 +343,7 @@ const AssetForm: React.FC = () => {
             <option value="assetClass-1">Asset Class 1</option>
             <option value="assetClass-2">Asset Class 2</option>
             <option value="assetClass-3">Asset Class 3</option>
-          </select>
+          </select> */}
           <select
             id="dropdown"
             value={formData.objectStatus}
