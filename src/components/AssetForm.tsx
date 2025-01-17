@@ -129,7 +129,7 @@ const AssetForm: React.FC = () => {
       id: "dropdown",
       type: "select",
       name: "objectStatus",
-      placeholder: "Select Asset Class",
+      placeholder: "Select Objekt Status",
       options: [
         { value: "objectStatus-1", label: "Objektstatus 1" },
         { value: "objectStatus-2", label: "Objektstatus 2" },
@@ -150,7 +150,7 @@ const AssetForm: React.FC = () => {
     {
       id: "dropdown",
       type: "select",
-      name: "assetClass",
+      name: "energyClass",
       placeholder: "Energy Class",
       options: [
         { value: "A", label: "A" },
@@ -168,7 +168,7 @@ const AssetForm: React.FC = () => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    console.log("✨✨ Event in handle Change: ", e.target, formData);
+    console.log("✨✨ Event in handle Change: ", e.target.type, formData);
     // Checks for the type of field
     switch (e.target.type) {
       case "text":
@@ -186,7 +186,7 @@ const AssetForm: React.FC = () => {
         });
         break;
       case "select":
-        console.log("select", formData);
+        console.log("select-one", formData);
         setFormData({
           ...formData,
           [e.target.name]: e.target.value,
@@ -243,8 +243,8 @@ const AssetForm: React.FC = () => {
       input.id === "dropdown" ? (
         <select
           id="dropdown"
-          value={String(input.value || "")} // Cast to string or provide a default empty string
-          name={String(input.value) || ""}
+          value={String(input.value || "")}
+          name={String(input.name) || ""}
           onChange={handleChange}
         >
           {/* Default dropdown field */}
@@ -268,82 +268,16 @@ const AssetForm: React.FC = () => {
     );
   };
 
-  // const renderInputs = (inputElements: InputElements): JSX.Element[] => {
-  //   return inputElements.map((input) => {
-  //     if (input.id === "dropdown" && input.options) {
-  //       return (
-  //         <select
-  //           key={input.name}
-  //           id="dropdown"
-  //           value={String(input.value || "")}
-  //           name={input.name}
-  //           onChange={handleChange}
-  //         >
-  //           {input.options.map((option) => (
-  //             <option key={option.value} value={option.value}>
-  //               {option.label}
-  //             </option>
-  //           ))}
-  //         </select>
-  //       );
-  //     }
-
-  //     if (input.type === "checkbox") {
-  //       return (
-  //         <input
-  //           key={input.name}
-  //           type="checkbox"
-  //           name={input.name}
-  //           onChange={handleChange}
-  //           checked={input.value === "true"}
-  //         />
-  //       );
-  //     }
-
-  //     // Default input case
-  //     return (
-  //       <input
-  //         key={input.name}
-  //         type={input.type}
-  //         name={input.name}
-  //         onChange={handleChange}
-  //         value={String(input.value || "")}
-  //         placeholder={input.placeholder}
-  //       />
-  //     );
-  //   });
-  // };
-
   return (
     <form className="asset-form" onSubmit={handleFormSubmit}>
       <div className="form-group">
-        <div className="form-row-top">
-          {/* function to render inputs */}
-          {renderInputs(adressFields)}
-        </div>
+        <div className="form-row-top">{renderInputs(adressFields)}</div>
       </div>
       <div className="form-group">
-        <div className="form-row">
-          {/* function to render inputs */}
-          {renderInputs(areaFields)}
-        </div>
+        <div className="form-row">{renderInputs(areaFields)}</div>
         <div className="form-row">{renderInputs(yearInformationFields)}</div>
-        {/* Todo: create function for select */}
         <div className="form-row">
           {renderInputs(assetClassFields)}
-          {/* <select
-            id="dropdown"
-            value={formData.assetClass}
-            onChange={handleChange}
-            name="assetClass"
-          >
-            <option value="" disabled selected>
-              Select Asset Class
-            </option>
-            <option value="assetClass-1">Asset Class 1</option>
-            <option value="assetClass-2">Asset Class 2</option>
-            <option value="assetClass-3">Asset Class 3</option>
-          </select> */}
           <select
             id="dropdown"
             value={formData.objectStatus}
