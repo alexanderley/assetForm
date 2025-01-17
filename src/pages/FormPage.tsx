@@ -24,7 +24,7 @@ const FormPage: React.FC = () => {
 
   return (
     <>
-      <div className="container">
+      {/* <div className="container">
         <Container>
           <Card className="step-one">
             <h1>Step One</h1>
@@ -55,7 +55,7 @@ const FormPage: React.FC = () => {
             Show Content
           </Button>
         </Container>
-      </div>
+      </div> */}
     </>
   );
 };
