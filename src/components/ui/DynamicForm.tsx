@@ -3,6 +3,7 @@ import useDynamicForm from "../customHooks/useDynamicForm";
 
 import { InputFieldConfig } from "../../types/Inputtypes";
 
+// #Todo: This needs to go to the porent in order to be customizable
 const formConfig: InputFieldConfig[] = [
   {
     id: "1",
