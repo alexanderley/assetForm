@@ -25,6 +25,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formConfig }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Form Data:", formData);
+    setFormContextData(formData);
   };
 
   return (

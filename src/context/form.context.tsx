@@ -54,8 +54,7 @@ interface FormProviderWrapperProps {
   children: ReactNode;
 }
 
-// const FormContext = createContext<FormContextType | undefined>(undefined);
-const FormContext = createContext<FormContextType>;
+const FormContext = createContext<FormContextType | undefined>(undefined);
 
 function FormProviderWrapper({ children }: FormProviderWrapperProps) {
   // const [formContextData, setFormContextData] = useState({
