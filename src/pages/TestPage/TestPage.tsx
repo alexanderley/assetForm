@@ -56,12 +56,65 @@ const TestPage: React.FC = () => {
     },
   ];
 
+  const formConfig2: InputFieldConfig[] = [
+    {
+      id: "10",
+      name: "email",
+      label: "Email Address",
+      type: "email",
+      required: true,
+    },
+    {
+      id: "20",
+      name: "subscribeNewsletter",
+      label: "Subscribe to Newsletter",
+      type: "checkbox",
+    },
+    {
+      id: "30",
+      name: "colorScheme",
+      label: "Color Scheme",
+      type: "switch",
+      options: [
+        { label: "Red", value: "red" },
+        { label: "Blue", value: "blue" },
+      ],
+      placeholder: "Choose a color",
+    },
+    {
+      id: "40",
+      name: "membershipLevel",
+      label: "Membership Level",
+      type: "switch",
+      options: [
+        { label: "Silver", value: "silver" },
+        { label: "Gold", value: "gold" },
+      ],
+      placeholder: "Select membership level",
+    },
+    {
+      id: "50",
+      name: "fullName",
+      label: "Full Name",
+      type: "text",
+      required: true,
+    },
+    {
+      id: "60",
+      name: "address",
+      label: "Address",
+      type: "text",
+      required: true,
+    },
+  ];
+
   // console.log("formConfig: ", formConfig);
 
   return (
     <div>
       <h1>Test Page for hooks</h1>
       <DynamicForm formConfig={formConfig} />
+      <DynamicForm formConfig={formConfig2} />
     </div>
   );
 };

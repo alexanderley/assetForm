@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import useDynamicForm from "../customHooks/useDynamicForm";
 
 import { InputFieldConfig } from "../../types/InputTypes";
+import { FormContext } from "../../context/form.context";
 
 interface DynamicFormProps {
   formConfig: InputFieldConfig[];
@@ -9,8 +10,12 @@ interface DynamicFormProps {
 
 const DynamicForm: React.FC<DynamicFormProps> = ({ formConfig }) => {
   console.log("formConfig in dynamicForm: ", formConfig);
+  // const formContext = useContext(FormContext);
+  const { formContextData, setFormContextData } = useContext(FormContext);
 
-  // const { formData, renderFields } = useDynamicForm(formConfig);
+  // console.log("🐧🐧🐧 formContext: ", formContext);
+  console.log("🚕🚕🚕: ", formContextData, setFormContextData);
+
   const { formData, renderFields } = useDynamicForm(formConfig);
 
   const handleSubmit = (e: React.FormEvent) => {
