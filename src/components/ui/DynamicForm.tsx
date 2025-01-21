@@ -1,37 +1,16 @@
 import React from "react";
 import useDynamicForm from "../customHooks/useDynamicForm";
 
-import { InputFieldConfig } from "../../types/Inputtypes";
+import { InputFieldConfig } from "../../types/InputTypes";
 
-// #Todo: This needs to go to the porent in order to be customizable
-const formConfig: InputFieldConfig[] = [
-  {
-    id: "1",
-    name: "username",
-    label: "Username",
-    type: "text",
-    required: true,
-  },
-  {
-    id: "2",
-    name: "acceptTerms",
-    label: "Accept Terms",
-    type: "checkbox",
-  },
-  {
-    id: "3",
-    name: "theme",
-    label: "Theme",
-    type: "switch",
-    options: [
-      { label: "Light", value: "light" },
-      { label: "Dark", value: "dark" },
-    ],
-    placeholder: "Select a theme",
-  },
-];
+interface DynamicFormProps {
+  formConfig: InputFieldConfig[];
+}
 
-const DynamicForm = () => {
+const DynamicForm: React.FC<DynamicFormProps> = ({ formConfig }) => {
+  console.log("formConfig in dynamicForm: ", formConfig);
+
+  // const { formData, renderFields } = useDynamicForm(formConfig);
   const { formData, renderFields } = useDynamicForm(formConfig);
 
   const handleSubmit = (e: React.FormEvent) => {

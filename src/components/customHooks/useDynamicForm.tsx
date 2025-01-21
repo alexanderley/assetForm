@@ -1,7 +1,6 @@
 import { useState } from "react";
 
-import { InputFieldConfig } from "../../types/Inputtypes";
-("../../types/Inputtypes");
+import { InputFieldConfig } from "../../types/InputTypes";
 
 type FormData = { [key: string]: string | number | boolean };
 
@@ -16,10 +15,14 @@ const useDynamicForm = (config: InputFieldConfig[]) => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    const { name, type, value, checked } = e.target;
+    const { name, type, value } = e.target;
+    const isCheckbox = type === "checkbox";
+    const checked =
+      isCheckbox && "checked" in e.target ? e.target.checked : undefined;
+
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: type === "checkbox" ? checked || false : value || "",
     }));
   };
 
