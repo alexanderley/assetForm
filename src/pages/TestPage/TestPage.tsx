@@ -108,8 +108,6 @@ const TestPage: React.FC = () => {
     },
   ];
 
-  // console.log("formConfig: ", formConfig);
-
   return (
     <div>
       <h1>Test Page for hooks</h1>

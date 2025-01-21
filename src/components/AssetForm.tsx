@@ -72,7 +72,11 @@ const AssetForm: React.FC = () => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type } = e.target;
+    const isCheckbox = type === "checkbox";
+    const checked =
+      isCheckbox && "checked" in e.target ? e.target.checked : undefined;
+
     setFormData({
       ...formData,
       [name]: type === "checkbox" ? checked : value,

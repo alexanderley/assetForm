@@ -10,10 +10,14 @@ interface DynamicFormProps {
 
 const DynamicForm: React.FC<DynamicFormProps> = ({ formConfig }) => {
   console.log("formConfig in dynamicForm: ", formConfig);
-  // const formContext = useContext(FormContext);
-  const { formContextData, setFormContextData } = useContext(FormContext);
 
-  // console.log("🐧🐧🐧 formContext: ", formContext);
+  const formContext = useContext(FormContext);
+  // important for typescript to make shure the state is defined
+  if (!formContext) {
+    return null;
+  }
+  const { formContextData, setFormContextData } = formContext;
+
   console.log("🚕🚕🚕: ", formContextData, setFormContextData);
 
   const { formData, renderFields } = useDynamicForm(formConfig);
